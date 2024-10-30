@@ -1,0 +1,201 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Image to Text Converter</title>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", sans-serif;
+      }
+
+      body {
+        background: #f0f2f5;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        text-align: center;
+        color: #1a73e8;
+        margin-bottom: 20px;
+      }
+
+      .upload-section {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      #imageInput {
+        display: none;
+      }
+
+      .upload-btn {
+        background: #1a73e8;
+        color: white;
+        padding: 12px 24px;
+        border-radius: 5px;
+        cursor: pointer;
+        display: inline-block;
+        margin: 10px;
+      }
+
+      #previewContainer {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 10px 0;
+        justify-content: center;
+      }
+
+      .preview-img {
+        max-width: 200px;
+        height: auto;
+        border-radius: 5px;
+      }
+
+      #videoElement {
+        max-width: 100%;
+        margin: 10px 0;
+      }
+
+      .result-section {
+        margin-top: 20px;
+      }
+
+      #resultText {
+        width: 100%;
+        min-height: 200px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        margin: 10px 0;
+      }
+
+      .btn {
+        background: #1a73e8;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin: 5px;
+      }
+
+      #cameraBtn {
+        background: #28a745;
+      }
+
+      #clearBtn {
+        background: #dc3545;
+      }
+
+      .loading {
+        display: none;
+        text-align: center;
+        margin: 20px 0;
+      }
+
+      .spinner {
+        width: 40px;
+        height: 40px;
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #1a73e8;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      footer {
+        text-align: center;
+        margin-top: 20px;
+        padding: 20px;
+        color: #666;
+      }
+
+      @media (max-width: 600px) {
+        .container {
+          padding: 10px;
+        }
+
+        .btn {
+          width: 100%;
+          margin: 5px 0;
+        }
+      }
+      .result-section {
+        margin-top: 20px;
+        text-align: center;
+      }
+
+      .btn-group {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 10px;
+      }
+    </style>
+    <meta http-equiv="Permissions-Policy" content="camera=(), microphone=()" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Image to Text Converter</h1>
+
+      <div class="upload-section">
+        <button class="btn" id="cameraBtn">Open Camera</button>
+        <input type="file" id="imageInput" accept="image/*" multiple />
+        <label for="imageInput" class="upload-btn">Upload Images</label>
+
+        <video id="videoElement" style="display: none"></video>
+        <canvas id="canvas" style="display: none"></canvas>
+        <div id="previewContainer"></div>
+
+        <button class="btn" id="captureBtn" style="display: none">
+          Take Photo
+        </button>
+        <button class="btn" id="generateBtn">Generate All Text</button>
+        <button class="btn" id="clearBtn">Clear All</button>
+      </div>
+
+      <div class="loading">
+        <div class="spinner"></div>
+        <p>Processing image...</p>
+      </div>
+
+      <div class="result-section">
+        <textarea id="resultText" readonly></textarea>
+        <div class="btn-group">
+          <button class="btn" id="copyBtn">Copy Text</button>
+          <button class="btn" id="downloadBtn">Download PDF</button>
+        </div>
+      </div>
+    </div>
+
+    <footer>&copy; 2024 simbah_research</footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
