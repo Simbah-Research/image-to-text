@@ -1,4 +1,3 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -35,6 +34,11 @@
         margin-bottom: 20px;
       }
 
+      .language-selector {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
       .upload-section {
         text-align: center;
         margin-bottom: 20px;
@@ -68,13 +72,9 @@
         border-radius: 5px;
       }
 
-      #videoElement {
-        max-width: 100%;
-        margin: 10px 0;
-      }
-
       .result-section {
         margin-top: 20px;
+        text-align: center;
       }
 
       #resultText {
@@ -86,6 +86,13 @@
         margin: 10px 0;
       }
 
+      .btn-group {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 10px;
+      }
+
       .btn {
         background: #1a73e8;
         color: white;
@@ -94,10 +101,6 @@
         border-radius: 5px;
         cursor: pointer;
         margin: 5px;
-      }
-
-      #cameraBtn {
-        background: #28a745;
       }
 
       #clearBtn {
@@ -145,44 +148,35 @@
           width: 100%;
           margin: 5px 0;
         }
-      }
-      .result-section {
-        margin-top: 20px;
-        text-align: center;
-      }
 
-      .btn-group {
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-        margin-top: 10px;
+        .btn-group {
+          flex-direction: column;
+        }
       }
     </style>
-    <meta http-equiv="Permissions-Policy" content="camera=(), microphone=()" />
   </head>
   <body>
     <div class="container">
       <h1>Image to Text Converter</h1>
 
+      <div class="language-selector">
+        <select id="langSelect" class="btn">
+          <option value="eng">English</option>
+          <option value="ind">Indonesian</option>
+        </select>
+      </div>
+
       <div class="upload-section">
-        <button class="btn" id="cameraBtn">Open Camera</button>
         <input type="file" id="imageInput" accept="image/*" multiple />
         <label for="imageInput" class="upload-btn">Upload Images</label>
-
-        <video id="videoElement" style="display: none"></video>
-        <canvas id="canvas" style="display: none"></canvas>
         <div id="previewContainer"></div>
-
-        <button class="btn" id="captureBtn" style="display: none">
-          Take Photo
-        </button>
         <button class="btn" id="generateBtn">Generate All Text</button>
         <button class="btn" id="clearBtn">Clear All</button>
       </div>
 
       <div class="loading">
         <div class="spinner"></div>
-        <p>Processing image...</p>
+        <p>Processing images...</p>
       </div>
 
       <div class="result-section">
