@@ -7,13 +7,9 @@ const copyBtn = document.getElementById("copyBtn");
 const downloadBtn = document.getElementById("downloadBtn");
 const loading = document.querySelector(".loading");
 const clearBtn = document.getElementById("clearBtn");
-const cameraBtn = document.getElementById("cameraBtn");
-const videoElement = document.getElementById("videoElement");
-const canvas = document.getElementById("canvas");
-const captureBtn = document.getElementById("captureBtn");
+const langSelect = document.getElementById("langSelect");
 
 let images = [];
-let stream;
 
 imageInput.addEventListener("change", (e) => {
   const files = e.target.files;
@@ -30,35 +26,6 @@ imageInput.addEventListener("change", (e) => {
   }
 });
 
-cameraBtn.addEventListener("click", async () => {
-  try {
-    stream = await navigator.mediaDevices.getUserMedia({ video: true });
-    videoElement.srcObject = stream;
-    videoElement.style.display = "block";
-    captureBtn.style.display = "block";
-    await videoElement.play();
-  } catch (err) {
-    console.error(err);
-    alert("Cannot access camera");
-  }
-});
-
-captureBtn.addEventListener("click", () => {
-  canvas.width = videoElement.videoWidth;
-  canvas.height = videoElement.videoHeight;
-  canvas.getContext("2d").drawImage(videoElement, 0, 0);
-
-  const img = document.createElement("img");
-  img.src = canvas.toDataURL("image/png");
-  img.classList.add("preview-img");
-  previewContainer.appendChild(img);
-  images.push(img.src);
-
-  stream.getTracks().forEach((track) => track.stop());
-  videoElement.style.display = "none";
-  captureBtn.style.display = "none";
-});
-
 generateBtn.addEventListener("click", async () => {
   if (images.length === 0) return;
 
@@ -68,7 +35,11 @@ generateBtn.addEventListener("click", async () => {
   try {
     let allText = "";
     for (let img of images) {
-      const result = await Tesseract.recognize(img);
+      const result = await Tesseract.recognize(img, langSelect.value, {
+        logger: (m) => console.log(m),
+        tessedit_char_whitelist:
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.,!?-_'\"\n ",
+      });
       allText += result.data.text + "\n\n---\n\n";
     }
     resultText.value = allText;
